@@ -1,169 +1,94 @@
 <!doctype html><html><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1">
-<title>Emotion × Voice Conditions — MOSS-VA-v2</title><style>
-:root{--bg:#0d0f14;--panel:#161a22;--panel2:#1c2130;--bd:#2a3040;--tx:#e6e9f0;--mut:#98a2b8;--acc:#7c9cff;--a2:#f0a35e;--free:#5ec2a3;--cont:#c98bdb}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.5 -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,sans-serif}
+<title>Emotion × Voice v2 — MOSS-VA-v2</title><style>
+:root{--bg:#0d0f14;--panel:#161a22;--panel2:#1c2130;--bd:#2a3040;--tx:#e6e9f0;--mut:#98a2b8;--acc:#7c9cff;--a2:#f0a35e;--free:#5ec2a3;--cont:#c98bdb;--warn:#e0708a}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.5 -apple-system,Segoe UI,Roboto,sans-serif}
 a{color:var(--acc);text-decoration:none}a:hover{text-decoration:underline}
 .wrap{max-width:1180px;margin:0 auto;padding:28px 20px 80px}
-h1{font-size:26px;margin:0 0 6px;letter-spacing:-.3px}
-.sub{color:var(--mut);margin:0 0 22px;font-size:14px}
-.method{background:var(--panel);border:1px solid var(--bd);border-radius:12px;padding:16px 18px;margin:0 0 26px;font-size:13.5px;color:#c7cdda}
-.method b{color:var(--tx)}
-.method code{background:#0c0e13;border:1px solid var(--bd);border-radius:5px;padding:1px 5px;font-size:12px}
-.cardgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px}
-.vcard{background:var(--panel);border:1px solid var(--bd);border-radius:14px;padding:18px;transition:.15s}
-.vcard:hover{border-color:var(--acc);transform:translateY(-2px)}
-.vcard h3{margin:0 0 4px;font-size:17px}
-.tag{display:inline-block;font-size:11px;padding:2px 8px;border-radius:20px;background:var(--panel2);border:1px solid var(--bd);color:var(--mut);margin-right:6px}
-.tag.med{color:var(--a2);border-color:#5a4326}.tag.sml{color:var(--free);border-color:#2a4d43}
-.refbox{background:var(--panel);border:1px solid var(--bd);border-radius:12px;padding:16px 18px;margin:0 0 24px;display:flex;gap:18px;align-items:center;flex-wrap:wrap}
-.refbox audio{height:38px}
-.legend{display:flex;gap:18px;flex-wrap:wrap;margin:0 0 18px;font-size:12.5px;color:var(--mut)}
-.legend span{display:inline-flex;align-items:center;gap:6px}
-.dot{width:10px;height:10px;border-radius:3px;display:inline-block}
-table{border-collapse:separate;border-spacing:0;width:100%}
-.gridwrap{overflow-x:auto;border:1px solid var(--bd);border-radius:12px}
-th,td{padding:9px 10px;text-align:left;vertical-align:top;border-bottom:1px solid var(--bd)}
-thead th{position:sticky;top:0;background:var(--panel2);z-index:2;font-size:12px;color:var(--mut);font-weight:600}
-.emocell{font-weight:600;font-size:13.5px;white-space:nowrap;background:var(--panel);position:sticky;left:0;z-index:1}
-td.cell{min-width:210px}
-td.free{background:rgba(94,194,163,.04)}td.cont{background:rgba(201,139,219,.04)}
-audio{width:100%;height:34px;margin-bottom:6px}
-.sc{display:flex;gap:5px;flex-wrap:wrap;font-size:10.5px;color:var(--mut)}
-.sc b{color:var(--tx);font-weight:600}
-.chip{background:#0c0e13;border:1px solid var(--bd);border-radius:5px;padding:1px 5px}
-.txt{font-size:11px;color:#aeb6c7;margin:2px 0 6px;font-style:italic}
-.back{font-size:13px;margin-bottom:14px;display:inline-block}
-.foot{color:var(--mut);font-size:12px;margin-top:30px}
-</style><style>
-.hero{background:linear-gradient(135deg,#1a1f2e,#141824);border:1px solid var(--bd);border-radius:16px;padding:26px 26px 22px;margin:0 0 26px}
-.hero h1{font-size:30px;margin:0 0 8px}
+.hero{background:linear-gradient(135deg,#1a1f2e,#141824);border:1px solid var(--bd);border-radius:16px;padding:26px;margin:0 0 26px}
+h1{font-size:28px;margin:0 0 8px}.sub{color:var(--mut);font-size:14px;margin:0}
 .statstrip{display:flex;gap:14px;flex-wrap:wrap;margin:18px 0 0}
-.stat{background:#0c0e13;border:1px solid var(--bd);border-radius:10px;padding:12px 16px;min-width:120px}
-.stat .n{font-size:22px;font-weight:700;color:var(--tx)}.stat .l{font-size:11.5px;color:var(--mut);margin-top:2px}
-.sec{margin:34px 0 0}.sec h2{font-size:19px;margin:0 0 4px;letter-spacing:-.2px}
-.sec .lead{color:var(--mut);font-size:13.5px;margin:0 0 14px;max-width:900px}
+.stat{background:#0c0e13;border:1px solid var(--bd);border-radius:10px;padding:12px 16px;min-width:110px}
+.stat .n{font-size:22px;font-weight:700}.stat .l{font-size:11.5px;color:var(--mut);margin-top:2px}
+.sec{margin:32px 0 0}.sec h2{font-size:19px;margin:0 0 4px}.lead{color:var(--mut);font-size:13.5px;margin:0 0 12px;max-width:920px}
 .explain{background:var(--panel);border:1px solid var(--bd);border-radius:12px;padding:18px 20px;font-size:14px;color:#c7cdda;line-height:1.62}
-.explain h3{color:var(--tx);font-size:15px;margin:16px 0 6px}.explain h3:first-child{margin-top:0}
+.explain h3{color:var(--tx);font-size:15px;margin:14px 0 6px}.explain h3:first-child{margin-top:0}
 .explain b{color:var(--tx)}.explain code{background:#0c0e13;border:1px solid var(--bd);border-radius:5px;padding:1px 5px;font-size:12px}
-.stab{width:100%;border-collapse:collapse;font-size:13px;margin-top:6px}
+.stab{width:100%;border-collapse:collapse;font-size:13px}
 .stab th{text-align:left;color:var(--mut);font-weight:600;font-size:11.5px;padding:7px 9px;border-bottom:1px solid var(--bd)}
-.stab td{padding:8px 9px;border-bottom:1px solid var(--bd);vertical-align:middle}
+.stab td{padding:8px 9px;border-bottom:1px solid var(--bd)}
 .stab tr:hover td{background:rgba(124,156,255,.04)}
-.cdesc{color:var(--mut);font-size:11px;margin-top:2px;font-weight:400}
-.barwrap{height:4px;background:#0c0e13;border-radius:3px;margin-top:4px;overflow:hidden}.bar{height:100%}
-.vl{color:var(--a2)}
-.echip{display:inline-block;background:#0c0e13;border:1px solid #2a4d43;border-radius:20px;padding:4px 11px;margin:0 6px 8px 0;font-size:12.5px;color:#cfe6dd}
-.echip b{color:#5ec2a3}.echip.lo{border-color:#5a3030;color:#e6cfcf}.echip.lo b{color:#e08a8a}
+.gw{overflow-x:auto;border:1px solid var(--bd);border-radius:12px;padding:2px 10px}
 .take{background:var(--panel);border-left:3px solid var(--acc);border-radius:0 10px 10px 0;padding:12px 16px;margin:10px 0;font-size:13.5px;color:#cdd4e2}
 .take b{color:var(--tx)}
-.gridwrap2{overflow-x:auto;border:1px solid var(--bd);border-radius:12px;padding:2px 10px}
+.cardgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+.vcard{background:var(--panel);border:1px solid var(--bd);border-radius:14px;padding:16px;transition:.15s}
+.vcard:hover{border-color:var(--acc);transform:translateY(-2px)}
+.vcard h3{margin:0 0 6px;font-size:16px}
+.tag{display:inline-block;font-size:11px;padding:2px 8px;border-radius:20px;background:var(--panel2);border:1px solid var(--bd);color:var(--mut);margin-right:5px}
+.tag.med{color:var(--a2)}.tag.sml{color:var(--free)}.tag.warn{color:var(--warn)}
+audio{width:100%;height:34px;margin-top:8px}.foot{color:var(--mut);font-size:12px;margin-top:34px}
+.wl{color:var(--warn);font-weight:600}
 </style></head><body><div class=wrap>
-<div class=hero>
-<h1>Emotion × Voice · Delivery-Conditions Study</h1>
-<p class=sub>How 6 cloned voices express 40 emotions — loud or restrained, intense or moderate — with an expressive text-to-speech model.</p>
+<div class=hero><h1>Emotion × Voice · v2 — Delivery, Edge Cases &amp; Styles</h1>
+<p class=sub>6 cloned voices × (40 emotions × 4 conditions + 8 vocal-burst edge cases + 4 delivery styles) · best-of-32 · hard speaker-similarity floor.</p>
 <div class=statstrip>
-<div class=stat><div class=n>6</div><div class=l>reference voices</div></div>
-<div class=stat><div class=n>40</div><div class=l>emotions</div></div>
-<div class=stat><div class=n>4</div><div class=l>delivery conditions</div></div>
-<div class=stat><div class=n>960</div><div class=l>selected takes (0 empty)</div></div>
-<div class=stat><div class=n>30,720</div><div class=l>candidates generated (best-of-32)</div></div>
+<div class=stat><div class=n>6</div><div class=l>voices</div></div>
+<div class=stat><div class=n>172</div><div class=l>cells per voice</div></div>
+<div class=stat><div class=n>1032</div><div class=l>selected takes</div></div>
+<div class=stat><div class=n>33,024</div><div class=l>candidates (best-of-32)</div></div>
+<div class=stat><div class=n>113</div><div class=l>below spk-floor (flagged)</div></div>
+<div class=stat><div class=n>0.59</div><div class=l>mean speaker similarity</div></div>
 </div></div>
 
-<div class=sec><h2>What is this, in plain language?</h2>
-<div class=explain>
-<h3>The model</h3>
-<b>MOSS-VA-v2</b> (<code>laion/moss-tts-local-transformer-4.55b-voice-acting-v2</code>) is a 4.55-billion-parameter
-<b>text-to-speech</b> model tuned for <i>voice acting</i>: you give it a line of text plus a short written
-<b>stage direction</b> ("a warm, delighted tone"), and it speaks the line in that manner. It can also <b>clone a
-voice</b> from a few seconds of reference audio and keep speaking in that person's timbre.
-<h3>Emotion LoRAs</h3>
-On top of the base model we trained 40 small <b>emotion adapters</b> ("LoRAs") — one per emotion. Merging an
-adapter in nudges the voice toward that specific feeling. A dial called <b>λ (lambda)</b> controls how strongly:
-low λ = a hint of the emotion, high λ = full-blown. Each emotion has its own best λ (found earlier by an
-evolutionary search).
-<h3>The 4 delivery conditions</h3>
-A real actor can play the <i>same</i> feeling in very different ways. We cross two axes:
-<b>intensity</b> (intense vs. moderate) × <b>expression</b> (freely let out vs. contained/held-back). That gives four
-conditions: <b>A</b> intense &amp; free, <b>B</b> moderate &amp; free, <b>C</b> intense but <i>contained</i> (the
-character fights to suppress a strong feeling and it leaks through), <b>D</b> moderate &amp; quietly contained.
-Intensity sets the LoRA λ and the wording of the stage direction; containment is an extra delivery cue added to the line.
-<h3>How each clip was chosen</h3>
-For every <b>voice × emotion × condition</b> cell we generated <b>32 candidate takes</b> and kept the single best.
-Ranking = <code>z(genuineness) + z(vocal-burst-blend) + 1.25·emotion-strength</code> (an automatic scorer that
-rates how genuine and how emotional the voice sounds), and of the top 5 we picked the one whose voice most closely
-matches the reference speaker (<b>ECAPA speaker similarity</b>). So each of the 960 clips is a best-of-32,
-speaker-checked take. <b>0 cells failed</b> — the grid is complete.
+<div class=sec><h2>What is this?</h2><div class=explain>
+<h3>The setup</h3>
+<b>MOSS-VA-v2</b> (<code>laion/moss-tts-local-transformer-4.55b-voice-acting-v2</code>) is a 4.55B expressive
+text-to-speech model that can <b>clone a voice</b> from a few seconds of reference audio and follow a written
+stage direction. Per-emotion <b>LoRA adapters</b> nudge the voice toward a target feeling; a dial λ controls the dose.
+Each of 6 reference voices speaks 40 emotions in 4 delivery conditions — <b>A</b> intense&nbsp;&amp;&nbsp;free,
+<b>B</b> moderate&nbsp;&amp;&nbsp;free, <b>C</b> intense&nbsp;but&nbsp;contained, <b>D</b> moderate&nbsp;&amp;&nbsp;contained.
+<h3>What's new in v2</h3>
+<b>1. A hard speaker floor.</b> Every winner must have ECAPA speaker similarity ≥ <b>0.50</b> to its reference —
+candidates below it are rejected; if none of 32 passes, the best available take is shown but <span class=wl>flagged red</span>
+(113 of 1032 cells). No more "different person" outliers.
+<b>2. Harder intensities.</b> Intense conditions now merge the emotion LoRA at λ up to <b>1.9</b> (was 1.5) with more
+extreme stage directions for the high-arousal emotions (Fear, Anger, Pain, Distress, Triumph…).
+<b>3. Longer sentences.</b> Every carrier sentence rewritten to ≥ 20 words (median 27) so there is room to act.
+<b>4. Edge cases.</b> 8 vocal-burst situations per voice — fear/pain screams, groaning, shivering, laughter, crying,
+whimpering, tears — reproduced from our evolutionary edge-case search recipes, best-of-32 under the same floor.
+<b>5. Delivery styles.</b> Very-quiet whispering, ASMR whispering, ranting and shouting via VoiceNet-dimension LoRA blends.
+<h3>Selection</h3>
+Per cell 32 candidates are generated; ranked by reward = z(genuineness)+z(vocal-burst-blend)+1.25·emotion-strength;
+the top-8 are checked against the speaker floor and the <b>highest-reward take that still sounds like the speaker</b> wins.
 </div></div>
-
-<div class=sec><h2>The 4 conditions, measured</h2>
-<p class=lead>Averaged over all 6 voices × 40 emotions (240 clips per condition). Bars are relative within each column.
-<b>emo</b> = emotion strength, <b>genu</b> = genuineness, <b>blend</b> = vocal-burst naturalness, <b>spk</b> = speaker
-similarity to the reference, <b>reward</b> = selection score, <b>λ</b> = average LoRA merge.</p>
-<div class=gridwrap2><table class=stab>
-<tr><th>condition</th><th>emo ↑</th><th>genu ↑</th><th>blend ↑</th><th>spk ↑</th><th>reward</th><th>λ</th></tr>
-<tr><td><b>A</b> · intense-free<div class=cdesc>full-blast, nothing held back</div></td><td>0.474<div class=barwrap><div class=bar style='width:94%;background:#f0a35e'></div></div></td><td>0.329<div class=barwrap><div class=bar style='width:64%;background:#5ec2a3'></div></div></td><td>0.289<div class=barwrap><div class=bar style='width:26%;background:#7c9cff'></div></div></td><td>0.571<div class=barwrap><div class=bar style='width:35%;background:#c98bdb'></div></div></td><td>3.42</td><td>1.24</td></tr><tr><td><b>B</b> · moderate-free<div class=cdesc>present but dialed down</div></td><td>0.290<div class=barwrap><div class=bar style='width:47%;background:#f0a35e'></div></div></td><td>0.386<div class=barwrap><div class=bar style='width:93%;background:#5ec2a3'></div></div></td><td>0.338<div class=barwrap><div class=bar style='width:59%;background:#7c9cff'></div></div></td><td>0.639<div class=barwrap><div class=bar style='width:70%;background:#c98bdb'></div></div></td><td>2.74</td><td>0.50</td></tr><tr><td><b>C</b> · intense-contained<div class=cdesc>strong feeling the character fights to suppress — it leaks out</div></td><td>0.299<div class=barwrap><div class=bar style='width:50%;background:#f0a35e'></div></div></td><td>0.260<div class=barwrap><div class=bar style='width:30%;background:#5ec2a3'></div></div></td><td>0.341<div class=barwrap><div class=bar style='width:61%;background:#7c9cff'></div></div></td><td>0.571<div class=barwrap><div class=bar style='width:35%;background:#c98bdb'></div></div></td><td>2.94</td><td>1.24</td></tr><tr><td><b>D</b> · moderate-contained<div class=cdesc>gentle, quietly kept inside</div></td><td>0.198<div class=barwrap><div class=bar style='width:24%;background:#f0a35e'></div></div></td><td>0.337<div class=barwrap><div class=bar style='width:68%;background:#5ec2a3'></div></div></td><td>0.363<div class=barwrap><div class=bar style='width:75%;background:#7c9cff'></div></div></td><td>0.625<div class=barwrap><div class=bar style='width:63%;background:#c98bdb'></div></div></td><td>2.61</td><td>0.50</td></tr></table></div>
-<div class=take><b>Reading it:</b> <b>A (intense-free)</b> maximises felt emotion (0.47) but pays for it — lowest speaker
-similarity and reduced genuineness, because pushing λ high distorts the cloned timbre. <b>D (moderate-contained)</b> is
-the opposite: least emotion but the most natural blend and a well-preserved voice. <b>C (intense-contained)</b> — a big
-feeling actively suppressed — is the hardest on genuineness (0.26): forcing intensity <i>and</i> restraint is the least
-natural combination. Containment barely costs speaker similarity; <b>raw intensity is what pulls the clone away.</b></div>
-</div>
 
 <div class=sec><h2>The 6 voices</h2>
-<p class=lead>Three came from <b>medium</b> voice clusters (3 similar samples) and three from <b>small</b> clusters (1–2 samples),
-drawn from our character-voice clustering. <b>quality</b>/<b>genu</b> describe the reference clip; <b>emo</b>/<b>spk</b>/<b>reward</b>
-are that voice's averages across all 160 of its takes.</p>
-<div class=gridwrap2><table class=stab>
-<tr><th>voice</th><th>cluster</th><th>age band</th><th>quality</th><th>ref genu</th><th>emo ↑</th><th>spk ↑</th><th>reward</th></tr>
-<tr><td><a href='voice0.html'>Voice 0</a> · <span class=vl>human</span></td><td><span class='tag med'>medium</span> size 3</td><td>3</td><td>0.98</td><td>2.73</td><td>0.325</td><td>0.617</td><td>2.97</td></tr><tr><td><a href='voice1.html'>Voice 1</a> · <span class=vl>voice-01</span></td><td><span class='tag med'>medium</span> size 3</td><td>2</td><td>0.97</td><td>2.42</td><td>0.307</td><td>0.507</td><td>2.86</td></tr><tr><td><a href='voice2.html'>Voice 2</a> · <span class=vl>goblin</span></td><td><span class='tag med'>medium</span> size 3</td><td>1</td><td>0.95</td><td>2.34</td><td>0.316</td><td>0.629</td><td>2.88</td></tr><tr><td><a href='voice3.html'>Voice 3</a> · <span class=vl>ladybug</span></td><td><span class='tag sml'>small</span> size 2</td><td>1</td><td>0.78</td><td>4.58</td><td>0.288</td><td>0.641</td><td>3.06</td></tr><tr><td><a href='voice4.html'>Voice 4</a> · <span class=vl>murloc</span></td><td><span class='tag sml'>small</span> size 1</td><td>3</td><td>0.94</td><td>4.15</td><td>0.342</td><td>0.571</td><td>2.94</td></tr><tr><td><a href='voice5.html'>Voice 5</a> · <span class=vl>sheep</span></td><td><span class='tag sml'>small</span> size 1</td><td>2</td><td>0.94</td><td>3.81</td><td>0.314</td><td>0.644</td><td>2.87</td></tr></table></div>
-<div class=take><b>Reading it:</b> the small, even the noisy low-quality clusters (Voice 3 "ladybug", Voice 5 "sheep") clone and
-emote just as well as the clean medium voices — highest speaker similarity (0.64) came from the small clusters. A rich
-reference is not required for a convincing expressive clone.</div>
-</div>
+<div class=gw><table class=stab><tr><th>voice</th><th>cluster</th><th>cells</th><th>below floor</th><th>spk mean</th><th>emo mean</th></tr><tr><td><a href='voice0.html'>Voice 0</a> · <span style='color:var(--a2)'>human</span></td><td><span class='tag med'>medium</span></td><td>172</td><td class=wl>12</td><td>0.601</td><td>0.313</td></tr><tr><td><a href='voice1.html'>Voice 1</a> · <span style='color:var(--a2)'>voice-01</span></td><td><span class='tag med'>medium</span></td><td>172</td><td class=wl>49</td><td>0.515</td><td>0.301</td></tr><tr><td><a href='voice2.html'>Voice 2</a> · <span style='color:var(--a2)'>goblin</span></td><td><span class='tag med'>medium</span></td><td>172</td><td class=wl>14</td><td>0.607</td><td>0.308</td></tr><tr><td><a href='voice3.html'>Voice 3</a> · <span style='color:var(--a2)'>ladybug</span></td><td><span class='tag sml'>small</span></td><td>172</td><td class=wl>17</td><td>0.599</td><td>0.271</td></tr><tr><td><a href='voice4.html'>Voice 4</a> · <span style='color:var(--a2)'>murloc</span></td><td><span class='tag sml'>small</span></td><td>172</td><td class=wl>13</td><td>0.586</td><td>0.301</td></tr><tr><td><a href='voice5.html'>Voice 5</a> · <span style='color:var(--a2)'>sheep</span></td><td><span class='tag sml'>small</span></td><td>172</td><td class=wl>8</td><td>0.624</td><td>0.305</td></tr></table></div>
+<div class=take><b>Reading it:</b> five of six voices keep speaker similarity ≈0.59–0.62 with only 8–17 flagged cells.
+<b>Voice 1 is the hard case</b> (49 flagged, spk 0.515) — its timbre sits far from the model's prior, so extreme deliveries
+pull it off-voice much faster. The floor makes this visible instead of hiding it.</div></div>
 
-<div class=sec><h2>Which emotions come through strongest?</h2>
-<p class=lead>Average emotion strength across all voices &amp; conditions. Warm, soft states express most reliably; cold,
-subtle, negative states are hardest for the model to render.</p>
-<div style="margin:8px 0"><div style="font-size:12px;color:var(--mut);margin-bottom:6px">EASIEST to express</div><span class=echip>Thankfulness Gratitude <b>0.59</b></span><span class=echip>Relief <b>0.52</b></span><span class=echip>Fatigue Exhaustion <b>0.47</b></span><span class=echip>Contentment <b>0.42</b></span><span class=echip>Astonishment Surprise <b>0.40</b></span><span class=echip>Elation <b>0.40</b></span></div>
-<div style="margin:14px 0"><div style="font-size:12px;color:var(--mut);margin-bottom:6px">HARDEST to express</div><span class='echip lo'>Malevolence Malice <b>0.13</b></span><span class='echip lo'>Contempt <b>0.14</b></span><span class='echip lo'>Sourness <b>0.15</b></span><span class='echip lo'>Bitterness <b>0.18</b></span><span class='echip lo'>Intoxication Altered States of Consciousness <b>0.18</b></span><span class='echip lo'>Doubt <b>0.18</b></span></div>
-</div>
+<div class=sec><h2>The 4 conditions (all voices pooled, 240 cells each)</h2>
+<div class=gw><table class=stab><tr><th>condition</th><th>emo ↑</th><th>genu ↑</th><th>blend ↑</th><th>spk ↑</th><th>below floor</th></tr><tr><td><b>A</b> · intense-free<div style='color:var(--mut);font-size:11px'>full-blast, nothing held back</div></td><td>0.437</td><td>0.362</td><td>0.355</td><td>0.569</td><td class=wl>41/240</td></tr><tr><td><b>B</b> · moderate-free<div style='color:var(--mut);font-size:11px'>present but dialed down</div></td><td>0.273</td><td>0.400</td><td>0.336</td><td>0.617</td><td class=wl>6/240</td></tr><tr><td><b>C</b> · intense-contained<div style='color:var(--mut);font-size:11px'>strong feeling fought down — it leaks out</div></td><td>0.294</td><td>0.265</td><td>0.317</td><td>0.559</td><td class=wl>48/240</td></tr><tr><td><b>D</b> · moderate-contained<div style='color:var(--mut);font-size:11px'>gentle, quietly kept inside</div></td><td>0.185</td><td>0.326</td><td>0.336</td><td>0.617</td><td class=wl>6/240</td></tr></table></div>
+<div class=take><b>Intensity is what breaks the clone:</b> the two intense conditions carry 89 of the 113 flags
+(A: 41, C: 48) while the moderate ones have 6 each. Pushing λ to 1.9 raised emotion strength (A: 0.44 pooled) and the
+floor caught the cost. Containment (C) again costs the most genuineness (0.265) — forcing intensity <i>and</i> restraint
+stays the least natural combination.</div></div>
 
-<div class=sec><h2>Take-aways</h2>
-<div class=take>1. <b>Intensity trades against fidelity.</b> Higher emotion λ reliably raises felt emotion but lowers both genuineness and speaker similarity — there is no free lunch.</div>
-<div class=take>2. <b>Containment is cheap, intensity is expensive.</b> Holding a feeling back keeps the voice natural and on-timbre; cranking intensity is what degrades the clone.</div>
-<div class=take>3. <b>Intense-but-contained is the hardest ask</b> — the least natural of the four, useful dramatically but the riskiest to generate.</div>
-<div class=take>4. <b>Voice-clone quality is robust</b> to small / noisy references; expression does not need a pristine source clip.</div>
-<div class=take>5. <b>Soft positive emotions</b> (gratitude, relief, contentment) render far more strongly than <b>cold negatives</b> (malice, contempt, sourness).</div>
-</div>
+<div class=sec><h2>Edge cases &amp; delivery styles (per voice on each voice page)</h2>
+<div class=gw><table class=stab><tr><th>edge case</th><th>coverage</th><th>spk mean</th><th>below floor</th></tr><tr><td>Laughter</td><td>6/6</td><td>0.525</td><td class=wl>2</td></tr><tr><td>Cold shiver</td><td>6/6</td><td>0.594</td><td class=wl>1</td></tr><tr><td>Fear scream</td><td>6/6</td><td>0.504</td><td class=wl>3</td></tr><tr><td>Pain groan</td><td>6/6</td><td>0.564</td><td class=wl>0</td></tr><tr><td>Pain scream</td><td>6/6</td><td>0.592</td><td class=wl>1</td></tr><tr><td>Crying</td><td>6/6</td><td>0.599</td><td class=wl>0</td></tr><tr><td>Tears / crying in pain</td><td>6/6</td><td>0.639</td><td class=wl>0</td></tr><tr><td>Whimpering</td><td>6/6</td><td>0.598</td><td class=wl>0</td></tr></table></div>
+<div style="height:10px"></div>
+<div class=gw><table class=stab><tr><th>delivery style</th><th>coverage</th><th>spk mean</th><th>below floor</th></tr><tr><td>ASMR Whispering</td><td>6/6</td><td>0.625</td><td class=wl>0</td></tr><tr><td>Ranting</td><td>6/6</td><td>0.565</td><td class=wl>1</td></tr><tr><td>Shouting</td><td>6/6</td><td>0.474</td><td class=wl>3</td></tr><tr><td>Very Quiet Whispering</td><td>6/6</td><td>0.539</td><td class=wl>1</td></tr></table></div>
+<div class=take><b>Quiet extremes clone better than loud ones.</b> Crying, whimpering, tears and ASMR whisper keep
+spk ≈0.60–0.64 with almost no flags, while fear-screams and shouting are the hardest (spk 0.47–0.50, half the cells flagged)
+— screaming simply leaves little of the speaker's identity to match.</div></div>
 
-<div class=sec><h2>Listen — pick a voice</h2>
-<p class=lead>Each page holds that voice's full 40 × 4 grid. The player below each card is the voice's neutral reference.</p>
-<div class=cardgrid><a class=vcard href="voice0.html"><h3>Voice 0</h3>
-<div style="margin:6px 0 10px"><span class="tag med">medium</span>
-<span class=tag>size 3</span><span class=tag>~10.38s</span></div>
-<audio controls preload=none src="audio/ref0_neutral.mp3"></audio>
-<div style="color:var(--mut);font-size:12px;margin-top:8px">A voice that is extremely full and cinematic; extremely loud and non-whispered; very mechanically even in rhyt</div></a><a class=vcard href="voice1.html"><h3>Voice 1</h3>
-<div style="margin:6px 0 10px"><span class="tag med">medium</span>
-<span class=tag>size 3</span><span class=tag>~11.04s</span></div>
-<audio controls preload=none src="audio/ref1_neutral.mp3"></audio>
-<div style="color:var(--mut);font-size:12px;margin-top:8px">A voice that is very full and cinematic; very mechanically even in rhythm; very deep in throat resonance; nota</div></a><a class=vcard href="voice2.html"><h3>Voice 2</h3>
-<div style="margin:6px 0 10px"><span class="tag med">medium</span>
-<span class=tag>size 3</span><span class=tag>~11.36s</span></div>
-<audio controls preload=none src="audio/ref2_neutral.mp3"></audio>
-<div style="color:var(--mut);font-size:12px;margin-top:8px">A voice that is extremely denasal and clear; very explicit in content; very decelerating in pace; very collaps</div></a><a class=vcard href="voice3.html"><h3>Voice 3</h3>
-<div style="margin:6px 0 10px"><span class="tag sml">small</span>
-<span class=tag>size 2</span><span class=tag>~4.88s</span></div>
-<audio controls preload=none src="audio/ref3_neutral.mp3"></audio>
-<div style="color:var(--mut);font-size:12px;margin-top:8px">A voice that is extremely poor in recording quality; extremely noisy and aperiodic; extremely blurry and mumbl</div></a><a class=vcard href="voice4.html"><h3>Voice 4</h3>
-<div style="margin:6px 0 10px"><span class="tag sml">small</span>
-<span class=tag>size 1</span><span class=tag>~13.41s</span></div>
-<audio controls preload=none src="audio/ref4_neutral.mp3"></audio>
-<div style="color:var(--mut);font-size:12px;margin-top:8px">A voice that is extremely explicit in content; extremely full and cinematic; very dialogic and outward; very b</div></a><a class=vcard href="voice5.html"><h3>Voice 5</h3>
-<div style="margin:6px 0 10px"><span class="tag sml">small</span>
-<span class=tag>size 1</span><span class=tag>~10.27s</span></div>
-<audio controls preload=none src="audio/ref5_neutral.mp3"></audio>
-<div style="color:var(--mut);font-size:12px;margin-top:8px">A voice that is extremely decelerating in pace; extremely loud and non-whispered; notably noisy in the backgro</div></a></div></div>
-<p class=foot>Model: <code>laion/moss-tts-local-transformer-4.55b-voice-acting-v2</code> · emotion LoRAs (evolved λ) ·
-selection: reward + ECAPA speaker similarity · best-of-32 · 160 kbps mono MP3 · 960 takes, 0 failures.</p>
+<div class=sec><h2>Listen</h2><p class=lead>Each page: the full 40×4 emotion grid + edge cases + delivery styles, with scores (emo/genu/blend/spk/λ) under every player. Red-outlined cells are below the speaker floor.</p>
+<div class=cardgrid><a class=vcard href='voice0.html'><h3>Voice 0 · human</h3><div><span class='tag med'>medium cluster</span><span class=tag>172 cells</span><span class='tag warn'>12 below floor</span></div><audio controls preload=none src='audio/ref0_neutral.mp3'></audio></a><a class=vcard href='voice1.html'><h3>Voice 1 · voice-01</h3><div><span class='tag med'>medium cluster</span><span class=tag>172 cells</span><span class='tag warn'>49 below floor</span></div><audio controls preload=none src='audio/ref1_neutral.mp3'></audio></a><a class=vcard href='voice2.html'><h3>Voice 2 · goblin</h3><div><span class='tag med'>medium cluster</span><span class=tag>172 cells</span><span class='tag warn'>14 below floor</span></div><audio controls preload=none src='audio/ref2_neutral.mp3'></audio></a><a class=vcard href='voice3.html'><h3>Voice 3 · ladybug</h3><div><span class='tag sml'>small cluster</span><span class=tag>172 cells</span><span class='tag warn'>17 below floor</span></div><audio controls preload=none src='audio/ref3_neutral.mp3'></audio></a><a class=vcard href='voice4.html'><h3>Voice 4 · murloc</h3><div><span class='tag sml'>small cluster</span><span class=tag>172 cells</span><span class='tag warn'>13 below floor</span></div><audio controls preload=none src='audio/ref4_neutral.mp3'></audio></a><a class=vcard href='voice5.html'><h3>Voice 5 · sheep</h3><div><span class='tag sml'>small cluster</span><span class=tag>172 cells</span><span class='tag warn'>8 below floor</span></div><audio controls preload=none src='audio/ref5_neutral.mp3'></audio></a></div></div>
+
+<p class=foot>Model: <code>laion/moss-tts-local-transformer-4.55b-voice-acting-v2</code> · emotion LoRAs v3 (λ up to 1.9) ·
+VoiceNet dimension LoRAs for styles · selection: reward + ECAPA floor 0.50 · best-of-32 · 1032 takes.
+Related: <a href="https://laion-ai.github.io/moss-voicenet-manual/">VoiceNet dimension manual</a> ·
+<a href="https://laion-ai.github.io/moss-voiceacting-manual/">conditioning manual</a> ·
+<a href="https://laion-ai.github.io/moss-voicenet-highlow-grid/">VoiceNet scaling grid</a>.</p>
 </div></body></html>
