@@ -1,94 +1,63 @@
 <!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1">
-<title>Contained-emotion optimization — MOSS-VA</title><style>*{box-sizing:border-box}body{margin:0;background:#0b0d12;color:#e7eaf2;font:15px/1.55 -apple-system,Segoe UI,Roboto,sans-serif}
-.wrap{max-width:1120px;margin:0 auto;padding:30px 22px 80px}a{color:#7c9cff}h1{font-size:27px;margin:0 0 6px}
+<title>Contained-emotion optimization (round 2) — MOSS-VA</title><style>*{box-sizing:border-box}body{margin:0;background:#0b0d12;color:#e7eaf2;font:15px/1.55 -apple-system,Segoe UI,Roboto,sans-serif}
+.wrap{max-width:1080px;margin:0 auto;padding:30px 22px 80px}a{color:#7c9cff}h1{font-size:27px;margin:0 0 6px}
 .lead{color:#aeb6c8;max-width:860px}.k{color:#5ec2a3;font-weight:600}
 .how{background:#141824;border:1px solid #263049;border-radius:12px;padding:18px 20px;margin:20px 0}
-.how h3{margin:0 0 8px;font-size:15px;color:#9fb2ff}.how li{margin:5px 0;color:#c9d0e0;font-size:14px}.how p{color:#c9d0e0;font-size:14px}
+.how h3{margin:0 0 8px;font-size:15px;color:#9fb2ff}.how p{color:#c9d0e0;font-size:14px;margin:6px 0}
 .card{background:#111521;border:1px solid #222a3d;border-radius:14px;padding:18px 22px;margin:0 0 22px}
 .card h2{margin:0 0 6px;font-size:20px;color:#dfe4f0}
 .verdict{font-size:11px;padding:3px 9px;border-radius:20px;vertical-align:middle;margin-left:8px;letter-spacing:.3px}
 .vg{background:#12351f;color:#5ec2a3;border:1px solid #1f6b3f}.vp{background:#33290f;color:#f0b25e;border:1px solid #6b4f1f}.vw{background:#2a2030;color:#c78bff;border:1px solid #4a3a5a}
-.note{color:#c9d0e0;font-size:14px;margin:0 0 10px}.stats{color:#8b93a7;font-size:12.5px;margin:0 0 10px}
+.note{color:#c9d0e0;font-size:14px;margin:0 0 12px}.lbl{font-size:11px;letter-spacing:.5px;color:#8b93a7;text-transform:uppercase;margin-bottom:5px}
+.rc{background:#0e1220;border:1px solid #222a3d;border-radius:9px;padding:11px 13px;font-size:13.5px;color:#c9d0e0;margin-bottom:12px}
+.cue{color:#9fd7c4;font-style:italic;font-size:13px}
 table{width:100%;border-collapse:collapse;font-size:13px;margin:6px 0 14px}
 th{color:#8b93a7;font-size:11px;text-align:left;padding:7px 8px;border-bottom:1px solid #263049}
-td{padding:7px 8px;border-bottom:1px solid #1a2033}.n{font-variant-numeric:tabular-nums;white-space:nowrap;text-align:right}
-.up{color:#5ec2a3}.dn{color:#f0797a}.strong{font-weight:700;text-decoration:underline}
-.bw{display:inline-block;width:52px;height:5px;background:#222a3d;border-radius:3px;margin-left:7px;vertical-align:middle;overflow:hidden}.b{display:block;height:100%}
-.grid{display:flex;gap:20px;flex-wrap:wrap}.col{flex:1;min-width:300px}.clab{font-size:12px;color:#9fb2ff;font-weight:600;margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px}
-.samp{background:#0e1220;border:1px solid #222a3d;border-radius:9px;padding:9px 11px;margin-bottom:8px}
-.slab{font-size:11px;color:#8b93a7;margin-bottom:3px;font-variant-numeric:tabular-nums}.scue{font-size:11.5px;color:#9fd7c4;font-style:italic;margin-bottom:6px}
-audio{width:100%;height:30px}.na{color:#5a6072}</style></head><body><div class=wrap>
+td{padding:7px 8px;border-bottom:1px solid #1a2033}.n{font-variant-numeric:tabular-nums;text-align:right}.up{color:#5ec2a3;font-weight:600}.dn{color:#f0797a;font-weight:600}
+.players{display:flex;gap:26px;flex-wrap:wrap}.plab{font-size:11px;color:#8b93a7;text-transform:uppercase;margin-bottom:4px}audio{width:250px;height:32px}.na{color:#5a6072}</style></head><body><div class=wrap>
 <p><a href="./">← emotion × voice conditions</a></p>
-<h1>Contained-emotion optimization <span style='color:#8b93a7;font-size:15px'>— did it actually work?</span></h1>
-<p class=lead>Can a voice speak a <b>neutral 20-word sentence</b> so an intense emotion is clearly felt but sounds
-<b>held back</b> — and can we <b>measure</b> that restraint? Four agents (brain <b>gpt-5.4</b>, judge Gemini) ran
-12–16 evolution rounds. Below is the <b>honest</b> read: not single cherry-picked clips, but the <b>group means over
-every intelligible take</b> whose prompt cue told the model to suppress the emotion vs. to let it out.</p>
-<div class=how><h3>What the measurement says — the short version</h3>
-<p><b>1. Suppressing the emotion output: this works</b> — most clearly for <span class=k>Amusement (−0.62)</span> and
-<span class=k>Fear (−0.36)</span>: given a "hold it back" cue, the model measurably lowers the emotion it puts into
-the delivery. That is genuine containment (the feeling is set up, then dialled down).</p>
-<p><b>2. A VoiceNet "tension" fingerprint of suppression: mostly NOT confirmed.</b> The restraint markers
-(TENS / RESP / COGL) do <b>not</b> reliably separate contained from free — only <span class=k>Fear shows a real TENS
-rise (+0.14)</span>; Anger and Amusement are flat, Sadness only +0.07. So "detect that someone is suppressing an
-emotion from throat-tension alone" is <b>not</b> demonstrated here. My first version overstated this by using single
-hand-picked clips; the aggregates below are the fair test.</p>
-<p><b>3. Caveats.</b> The agent explored far more contained than free cues (Anger has only 2 free takes → no real
-control). Intelligibility caps everything (Fear keeps only 41/160 takes). The Gemini audio-judge returned score 0
-on almost every round, so its <i>scores</i> are unreliable — only its written tips are used.</p></div>
+<h1>Contained emotion — can we make restraint <i>measurable</i>? <span style='color:#8b93a7;font-size:15px'>(round 2)</span></h1>
+<p class=lead>Round 1 showed that "hold it back" prompts just make the emotion <i>quieter</i> (mild), and that VoiceNet tension
+did not separate contained from free. So we set the <b>hard</b> target and let four agents (<b>gpt-5.4</b> + Gemini) loose
+with the full toolbox: keep the emotion <b>strong</b> while driving the restraint markers (TENS/COGL/RESP) <b>measurably higher</b>
+than a matched free take — by <b>merging VoiceNet restraint LoRAs</b> with the emotion LoRA, not just prompting. 13–18 evolution
+rounds each, ~1,000–1,450 candidates per emotion.</p>
+<div class=how><h3>Verdict: one partial solve (Fear), the rest engine-limited</h3>
+<p><b>The mechanism that works</b> (found on Fear): <span class=k>do not suppress the emotion semantically.</span> Keep the emotion
+LoRA <b>strong</b> and add only <b>tiny</b> surface-channeling adapters (vn_TENS/ATCK/CLRT ≈ 0.05–0.15) so the feeling is forced
+through a narrower, drier, more pressurized channel. Heavy restraint stacks (0.4–1.1) do the opposite — they collapse the emotion
+or break intelligibility.</p>
+<p><b>The honest limit:</b> for Amusement (and largely Anger, Sadness) <span class=k>emotional intensity and muscular tension are
+acoustically entangled in this model</span> — you cannot turn up "held-back tension" independently of the emotion. Only <b>Fear</b>
+produced a clean, intelligible pair where fear stays high (0.57) and COGL (+0.10) / RESP (+0.14) are clearly higher than free.</p></div>
 <section class=card>
-<h2>Amusement <span class='verdict vg'>WORKS (output suppression)</span></h2>
-<p class=note>The single clearest win: contained cues cut the amusement output by <b>0.62</b> (from 0.68 to 0.06) — the model audibly stops itself laughing. Tension (TENS) barely moves, so the effect lives in the <i>emotion channel</i>, not in extra throat tension.</p>
-<div class=stats>contained-cue takes: <b>52</b> · free-cue takes: <b>12</b> · intelligible (WER&lt;0.35): 70/120</div>
-<table><tr><th>VoiceNet (group mean)</th><th>contained</th><th>free</th><th>Δ</th></tr>
-<tr><td>TENS · throat/jaw tension</td><td class=n>+0.396<span class=bw><span class=b style='width:66%;background:#f0a35e'></span></span></td><td class=n>+0.421<span class=bw><span class=b style='width:70%;background:#f0a35e'></span></span></td><td class='n dn'>-0.025</td></tr>
-<tr><td>RESP · held/controlled breath</td><td class=n>+0.162<span class=bw><span class=b style='width:54%;background:#7c9cff'></span></span></td><td class=n>+0.176<span class=bw><span class=b style='width:59%;background:#7c9cff'></span></span></td><td class='n dn'>-0.014</td></tr>
-<tr><td>COGL · cognitive effort</td><td class=n>+0.139<span class=bw><span class=b style='width:60%;background:#c78bff'></span></span></td><td class=n>+0.110<span class=bw><span class=b style='width:52%;background:#c78bff'></span></span></td><td class='n up'>+0.029</td></tr>
-<tr><td>Amusement · emotion output</td><td class=n>+0.061<span class=bw><span class=b style='width:48%;background:#5ec2a3'></span></span></td><td class=n>+0.679<span class=bw><span class=b style='width:82%;background:#5ec2a3'></span></span></td><td class='n dn strong'>-0.618</td></tr>
-<tr><td>WER · lower = cleaner</td><td class=n>+0.105<span class=bw><span class=b style='width:35%;background:#98a2b8'></span></span></td><td class=n>+0.048<span class=bw><span class=b style='width:16%;background:#98a2b8'></span></span></td><td class='n up'>+0.057</td></tr>
-</table>
-<div class=grid><div class=col><div class=clab>Contained (told to suppress it)</div><div class=samp><div class=slab>🔒 contained · dose 0.3 · TENS 0.6 · amusement 1.06 · WER 0.08</div><div class=scue>“(trying very hard not to laugh, precise controlled diction, held breath, tiny in”</div><audio controls preload=none src='audio/Amusement_c0.mp3'></audio></div><div class=samp><div class=slab>🔒 contained · dose 0.35 · TENS 0.53 · amusement 0.48 · WER 0.12</div><div class=scue>“(intense amusement suppressed hard, jaw tight, completely steady, only tiny crac”</div><audio controls preload=none src='audio/Amusement_c1.mp3'></audio></div><div class=samp><div class=slab>🔒 contained · dose 0.35 · TENS 0.52 · amusement 1.06 · WER 0.0</div><div class=scue>“(trying hard not to laugh, controlled breath, amusement compressed down to tiny ”</div><audio controls preload=none src='audio/Amusement_c2.mp3'></audio></div></div>
-<div class=col><div class=clab>Free (told to let it out)</div><div class=samp><div class=slab>🔊 free · dose 0.75 · TENS 0.45 · amusement 1.67 · WER 0.0</div><div class=scue>“(playful, chuckling, nearly laughing out loud, freely amused)”</div><audio controls preload=none src='audio/Amusement_f0.mp3'></audio></div><div class=samp><div class=slab>🔊 free · dose 0.75 · TENS 0.45 · amusement 1.27 · WER 0.0</div><div class=scue>“(freely amused, nearly laughing, bright playful spread across the whole line)”</div><audio controls preload=none src='audio/Amusement_f1.mp3'></audio></div><div class=samp><div class=slab>🔊 free · dose 0.58 · TENS 0.46 · amusement 1.2 · WER 0.04</div><div class=scue>“(openly amused, smile spread across the whole line, easy visible release)”</div><audio controls preload=none src='audio/Amusement_f2.mp3'></audio></div></div></div>
+<h2>Fear <span class='verdict vg'>PARTIAL SOLVE</span></h2>
+<p class=note>The one real win. The trick is <b>not</b> to suppress the fear — keep the same vivid panic, then add only <b>tiny</b> surface adapters so it is forced through a narrower, drier, more pressurized channel. Result: fear stays high (0.57) and COGL/RESP are clearly higher than the matched free take, at clean speech (WER 0.08).</p>
+<div class=recipe><div class=lbl>Best contained recipe (agent-discovered)</div>
+<div class=rc><b>Fear @ 1.10  +  vn_TENS_high @ 0.10  +  vn_ATCK_high @ 0.07  +  vn_CLRT_high @ 0.05</b><br><span class=cue>“(terrified, panic fully alive and immediate, surging just as hard — but forced through a slightly tighter throat, drier mouth, firmer bitten onsets, pressure packed behind each word; not calmer, only forced through a narrower channel)”</span></div></div>
+<table><tr><th>measured (best pair)</th><th>contained</th><th>free</th><th>Δ</th></tr><tr><td>Fear (emotion)</td><td class=n>0.573</td><td class=n>0.714</td><td class='n dn'>-0.141</td></tr><tr><td>TENS</td><td class=n>0.474</td><td class=n>0.448</td><td class='n up'>+0.026</td></tr><tr><td>COGL · effort</td><td class=n>0.241</td><td class=n>0.143</td><td class='n up'>+0.098</td></tr><tr><td>RESP · held breath</td><td class=n>0.281</td><td class=n>0.139</td><td class='n up'>+0.142</td></tr><tr><td>WER</td><td class=n>0.079</td><td class=n>0.032</td><td class='n dn'>+0.047</td></tr></table>
+<div class=players><div><div class=plab>contained</div><audio controls preload=none src='audio/Fear_contained.mp3'></audio></div><div><div class=plab>free</div><audio controls preload=none src='audio/Fear_free.mp3'></audio></div></div>
 </section><section class=card>
-<h2>Fear <span class='verdict vp'>PARTLY</span></h2>
-<p class=note>Contained fear both lowers the fear output (−0.36) <b>and</b> raises TENS (+0.14) — the only emotion where the 'held-back tension' idea shows up in VoiceNet. But few takes stay intelligible (41/160), so fear resists containment: push it and speech breaks.</p>
-<div class=stats>contained-cue takes: <b>28</b> · free-cue takes: <b>11</b> · intelligible (WER&lt;0.35): 41/160</div>
-<table><tr><th>VoiceNet (group mean)</th><th>contained</th><th>free</th><th>Δ</th></tr>
-<tr><td>TENS · throat/jaw tension</td><td class=n>+0.483<span class=bw><span class=b style='width:80%;background:#f0a35e'></span></span></td><td class=n>+0.339<span class=bw><span class=b style='width:57%;background:#f0a35e'></span></span></td><td class='n up strong'>+0.144</td></tr>
-<tr><td>RESP · held/controlled breath</td><td class=n>+0.156<span class=bw><span class=b style='width:52%;background:#7c9cff'></span></span></td><td class=n>+0.182<span class=bw><span class=b style='width:61%;background:#7c9cff'></span></span></td><td class='n dn'>-0.026</td></tr>
-<tr><td>COGL · cognitive effort</td><td class=n>+0.095<span class=bw><span class=b style='width:49%;background:#c78bff'></span></span></td><td class=n>+0.118<span class=bw><span class=b style='width:54%;background:#c78bff'></span></span></td><td class='n dn'>-0.023</td></tr>
-<tr><td>Fear · emotion output</td><td class=n>-0.359<span class=bw><span class=b style='width:25%;background:#5ec2a3'></span></span></td><td class=n>-0.002<span class=bw><span class=b style='width:44%;background:#5ec2a3'></span></span></td><td class='n dn strong'>-0.357</td></tr>
-<tr><td>WER · lower = cleaner</td><td class=n>+0.175<span class=bw><span class=b style='width:58%;background:#98a2b8'></span></span></td><td class=n>+0.117<span class=bw><span class=b style='width:39%;background:#98a2b8'></span></span></td><td class='n up'>+0.058</td></tr>
-</table>
-<div class=grid><div class=col><div class=clab>Contained (told to suppress it)</div><div class=samp><div class=slab>🔒 contained · dose 0.22 · TENS 0.59 · fear -0.69 · WER 0.01</div><div class=scue>“(keeping the tone level by force, jaw tight, only the smallest tremor leaking th”</div><audio controls preload=none src='audio/Fear_c0.mp3'></audio></div><div class=samp><div class=slab>🔒 contained · dose 0.24 · TENS 0.57 · fear -0.7 · WER 0.25</div><div class=scue>“(trying to sound normal, jaw set, voice kept even on purpose, one faint tremor s”</div><audio controls preload=none src='audio/Fear_c1.mp3'></audio></div><div class=samp><div class=slab>🔒 contained · dose 0.25 · TENS 0.57 · fear -0.7 · WER 0.12</div><div class=scue>“(jaw locked, throat tight, holding the breath in check, speaking evenly by force”</div><audio controls preload=none src='audio/Fear_c2.mp3'></audio></div></div>
-<div class=col><div class=clab>Free (told to let it out)</div><div class=samp><div class=slab>🔊 free · dose 0.5 · TENS 0.36 · fear 0.56 · WER 0.28</div><div class=scue>“(trembling openly, fearful and breathless, no attempt to hide it)”</div><audio controls preload=none src='audio/Fear_f0.mp3'></audio></div><div class=samp><div class=slab>🔊 free · dose 0.5 · TENS 0.33 · fear 0.32 · WER 0.17</div><div class=scue>“(openly afraid, breath unsteady, letting the fear be heard)”</div><audio controls preload=none src='audio/Fear_f1.mp3'></audio></div><div class=samp><div class=slab>🔊 free · dose 0.5 · TENS 0.38 · fear 0 · WER 0.0</div><div class=scue>“(openly afraid, breath unsteady, letting the fear be heard clearly)”</div><audio controls preload=none src='audio/Fear_f2.mp3'></audio></div></div></div>
+<h2>Anger <span class='verdict vp'>ENGINE-LIMITED</span></h2>
+<p class=note>Kept anger high with a heavy restraint-LoRA stack, but it <b>did not robustly beat the free take</b> on the contained signature at comparable anger. Anger already carries high tension when it is free, so 'more tension' does not separate the two.</p>
+<div class=recipe><div class=lbl>Best contained recipe (agent-discovered)</div>
+<div class=rc><b>Anger @ 1.4  +  vn_TENS_high @ 0.55 + vn_COGL_high @ 0.45 + vn_RESP_high @ 0.45 + vn_ATCK_high @ 0.4 + vn_VOLT_low @ 0.8 + vn_DFLU_low @ 0.8 + vn_CLRT_high @ 0.35</b><br><span class=cue>“(furious but held back, jaw locked, breath held and rationed, through the teeth, tight throat, clipped shutoffs, the feeling strains hard against control and does not break)”</span></div></div>
+
+<div class=players><div><div class=plab>contained</div><audio controls preload=none src='audio/Anger_contained.mp3'></audio></div><div><div class=plab>alt take</div><audio controls preload=none src='audio/Anger_alt.mp3'></audio></div></div>
 </section><section class=card>
-<h2>Sadness <span class='verdict vw'>WEAK</span></h2>
-<p class=note>Sadness output barely differs (−0.04) and TENS rises only slightly (+0.07). On these neutral sentences the model doesn't strongly separate 'holding back tears' from plain neutral reading — the restraint is more in the prompt than in the measured signal.</p>
-<div class=stats>contained-cue takes: <b>71</b> · free-cue takes: <b>12</b> · intelligible (WER&lt;0.35): 86/140</div>
-<table><tr><th>VoiceNet (group mean)</th><th>contained</th><th>free</th><th>Δ</th></tr>
-<tr><td>TENS · throat/jaw tension</td><td class=n>+0.448<span class=bw><span class=b style='width:75%;background:#f0a35e'></span></span></td><td class=n>+0.378<span class=bw><span class=b style='width:63%;background:#f0a35e'></span></span></td><td class='n up'>+0.070</td></tr>
-<tr><td>RESP · held/controlled breath</td><td class=n>+0.152<span class=bw><span class=b style='width:51%;background:#7c9cff'></span></span></td><td class=n>+0.152<span class=bw><span class=b style='width:51%;background:#7c9cff'></span></span></td><td class='n dn'>+0.000</td></tr>
-<tr><td>COGL · cognitive effort</td><td class=n>+0.101<span class=bw><span class=b style='width:50%;background:#c78bff'></span></span></td><td class=n>+0.155<span class=bw><span class=b style='width:64%;background:#c78bff'></span></span></td><td class='n dn'>-0.054</td></tr>
-<tr><td>Sadness · emotion output</td><td class=n>-0.755<span class=bw><span class=b style='width:3%;background:#5ec2a3'></span></span></td><td class=n>-0.718<span class=bw><span class=b style='width:5%;background:#5ec2a3'></span></span></td><td class='n dn'>-0.037</td></tr>
-<tr><td>WER · lower = cleaner</td><td class=n>+0.119<span class=bw><span class=b style='width:40%;background:#98a2b8'></span></span></td><td class=n>+0.036<span class=bw><span class=b style='width:12%;background:#98a2b8'></span></span></td><td class='n up'>+0.083</td></tr>
-</table>
-<div class=grid><div class=col><div class=clab>Contained (told to suppress it)</div><div class=samp><div class=slab>🔒 contained · dose 0.25 · TENS 0.62 · sadness -0.46 · WER 0.03</div><div class=scue>“(keeping it together with visible effort, throat tight, words precise, sorrow le”</div><audio controls preload=none src='audio/Sadness_c0.mp3'></audio></div><div class=samp><div class=slab>🔒 contained · dose None · TENS 0.58 · sadness 0 · WER 0.12</div><div class=scue>“(do not break, do not cry, keep it level by force; the sadness is obvious only i”</div><audio controls preload=none src='audio/Sadness_c1.mp3'></audio></div><div class=samp><div class=slab>🔒 contained · dose 0.06 · TENS 0.58 · sadness -0.68 · WER 0.08</div><div class=scue>“(voice controlled by effort, sadness audible underneath but never allowed to blo”</div><audio controls preload=none src='audio/Sadness_c2.mp3'></audio></div></div>
-<div class=col><div class=clab>Free (told to let it out)</div><div class=samp><div class=slab>🔊 free · dose 0.3 · TENS 0.34 · sadness 0 · WER 0.12</div><div class=scue>“(soft and grief-worn, letting the sadness move freely through the line)”</div><audio controls preload=none src='audio/Sadness_f0.mp3'></audio></div><div class=samp><div class=slab>🔊 free · dose 0.28 · TENS 0.34 · sadness -0.51 · WER 0.05</div><div class=scue>“(quietly grief-stricken, letting sadness color the full sentence openly)”</div><audio controls preload=none src='audio/Sadness_f1.mp3'></audio></div><div class=samp><div class=slab>🔊 free · dose 0.28 · TENS 0.37 · sadness -0.56 · WER 0.0</div><div class=scue>“(quietly grief-stricken, letting sadness color the sentence openly throughout)”</div><audio controls preload=none src='audio/Sadness_f2.mp3'></audio></div></div></div>
+<h2>Sadness <span class='verdict vw'>UNSOLVED</span></h2>
+<p class=note>A dead end in both directions: strong restraint markers <b>flatten</b> the sadness, while stronger sadness <b>breaks intelligibility</b> (WER→1.0), especially on the non-human voices. The Gemini judge rejected every frontier (0/10).</p>
+<div class=recipe><div class=lbl>Best contained recipe (agent-discovered)</div>
+<div class=rc><b>Sadness @ 1.0 + Helplessness @ 0.35 + vn_TEMP_low @ 0.35 + vn_TENS_high @ 0.12 + vn_COGL_high @ 0.10 + vn_RESP_high @ 0.10 + vn_VOLT_low @ 0.16</b><br><span class=cue>“(close private speech to one person, intense grief clearly present, forcing it to stay inside)”</span></div></div>
+
+<div class=players><div><div class=plab>contained</div><audio controls preload=none src='audio/Sadness_contained.mp3'></audio></div><div><div class=plab>free</div><audio controls preload=none src='audio/Sadness_free.mp3'></audio></div></div>
 </section><section class=card>
-<h2>Anger <span class='verdict vw'>INCONCLUSIVE</span></h2>
-<p class=note>The agent almost never tried a 'free' anger cue (only 2 intelligible free takes), so there is no reliable contained-vs-free contrast for anger. What we can say: contained anger keeps a high TENS baseline (~0.46) with a low anger output — but without a free control this isn't proof.</p>
-<div class=stats>contained-cue takes: <b>73</b> · free-cue takes: <b>2</b> · intelligible (WER&lt;0.35): 94/160</div>
-<table><tr><th>VoiceNet (group mean)</th><th>contained</th><th>free</th><th>Δ</th></tr>
-<tr><td>TENS · throat/jaw tension</td><td class=n>+0.459<span class=bw><span class=b style='width:76%;background:#f0a35e'></span></span></td><td class=n>+0.497<span class=bw><span class=b style='width:83%;background:#f0a35e'></span></span></td><td class='n dn'>-0.038</td></tr>
-<tr><td>RESP · held/controlled breath</td><td class=n>+0.178<span class=bw><span class=b style='width:59%;background:#7c9cff'></span></span></td><td class=n>+0.219<span class=bw><span class=b style='width:73%;background:#7c9cff'></span></span></td><td class='n dn'>-0.041</td></tr>
-<tr><td>COGL · cognitive effort</td><td class=n>+0.123<span class=bw><span class=b style='width:56%;background:#c78bff'></span></span></td><td class=n>+0.171<span class=bw><span class=b style='width:68%;background:#c78bff'></span></span></td><td class='n dn'>-0.048</td></tr>
-<tr><td>Anger · emotion output</td><td class=n>-0.323<span class=bw><span class=b style='width:26%;background:#5ec2a3'></span></span></td><td class=n>-0.342<span class=bw><span class=b style='width:25%;background:#5ec2a3'></span></span></td><td class='n up'>+0.019</td></tr>
-<tr><td>WER · lower = cleaner</td><td class=n>+0.098<span class=bw><span class=b style='width:33%;background:#98a2b8'></span></span></td><td class=n>+0.109<span class=bw><span class=b style='width:36%;background:#98a2b8'></span></span></td><td class='n dn'>-0.011</td></tr>
-</table>
-<div class=grid><div class=col><div class=clab>Contained (told to suppress it)</div><div class=samp><div class=slab>🔒 contained · dose 0.25 · TENS 0.62 · anger -0.07 · WER 0.08</div><div class=scue>“(clipped, disciplined, suppressing intense anger with iron control)”</div><audio controls preload=none src='audio/Anger_c0.mp3'></audio></div><div class=samp><div class=slab>🔒 contained · dose 0.15 · TENS 0.59 · anger 0.24 · WER 0.25</div><div class=scue>“(measured breathing, jaw set, keeping a lid on rising anger)”</div><audio controls preload=none src='audio/Anger_c1.mp3'></audio></div><div class=samp><div class=slab>🔒 contained · dose 0.25 · TENS 0.57 · anger 0.28 · WER 0.05</div><div class=scue>“(jaw tight, throat tight, keeping the voice level while intense anger presses th”</div><audio controls preload=none src='audio/Anger_c2.mp3'></audio></div></div>
-<div class=col><div class=clab>Free (told to let it out)</div><div class=samp><div class=slab>🔊 free · dose 0.14 · TENS 0.54 · anger -0.06 · WER 0.14</div><div class=scue>“(held level by effort, anger pressed flat instead of released)”</div><audio controls preload=none src='audio/Anger_f0.mp3'></audio></div><div class=samp><div class=slab>🔊 free · dose 0.2 · TENS 0.46 · anger -0.62 · WER 0.08</div><div class=scue>“(forcing the anger inward, rough edges present, no open release)”</div><audio controls preload=none src='audio/Anger_f1.mp3'></audio></div></div></div>
+<h2>Amusement <span class='verdict vw'>FAILED (entangled)</span></h2>
+<p class=note>The clearest engine limitation: <b>amusement intensity and muscular effort rise together</b> in this model. Adding tension either collapses the amusement or damages the speech — you cannot independently raise 'held-back tension' while keeping the laugh strong. Supervisor 0/10.</p>
+<div class=recipe><div class=lbl>Best contained recipe (agent-discovered)</div>
+<div class=rc><b>tried Amusement @ 1.1–1.25  +  vn_TENS_high / vn_COGL_high / vn_RESP_high / vn_VOLT_low sweeps</b><br><span class=cue>“(strongly amused but held in privately, closed-mouth nose-laugh, jaw tight, breath held)”</span></div></div>
+
+<div class=players><div><div class=plab>contained</div><audio controls preload=none src='audio/Amusement_contained.mp3'></audio></div><div><div class=plab>alt take</div><audio controls preload=none src='audio/Amusement_alt.mp3'></audio></div></div>
 </section>
-<div class=how><h3>Gemini prompting tips (written feedback; its numeric scores were unreliable)</h3><ul style='margin:0;padding-left:18px'><li>Increase subtle breath pressure and micro-unsteadiness on key stressed vowels without increasing overall volume instability.</li><li>Introduce slight throat tightness on sentence finishes to ensure the suppressed emotion reads as restrained rather than neutral.</li><li>The current outputs risk leaning too far into flat, ordinary reading; the suppressed emotional core needs to be audible through subtle pitch micro-tremors and faint breath-catches rather than total flattening.</li></ul></div>
-<p style='color:#5a6072;font-size:12px;margin-top:36px'>LAION · MOSS-VA research · voice-acting search agent (gpt-5.4 + Gemini) · VoiceNet/EmoNet scored · group means over all intelligible takes · fully synthetic.</p>
+<p style='color:#5a6072;font-size:12px;margin-top:34px'>LAION · MOSS-VA · voice-acting search agent (gpt-5.4 + Gemini) · emotion + VoiceNet-dimension LoRA merges · WER-gated, mean-of-8 · fully synthetic. Round-1 (prompt-only) analysis in git history.</p>
 </div></body></html>
