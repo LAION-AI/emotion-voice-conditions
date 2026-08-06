@@ -1,63 +1,75 @@
 <!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1">
-<title>Contained-emotion optimization (round 2) — MOSS-VA</title><style>*{box-sizing:border-box}body{margin:0;background:#0b0d12;color:#e7eaf2;font:15px/1.55 -apple-system,Segoe UI,Roboto,sans-serif}
-.wrap{max-width:1080px;margin:0 auto;padding:30px 22px 80px}a{color:#7c9cff}h1{font-size:27px;margin:0 0 6px}
-.lead{color:#aeb6c8;max-width:860px}.k{color:#5ec2a3;font-weight:600}
-.how{background:#141824;border:1px solid #263049;border-radius:12px;padding:18px 20px;margin:20px 0}
-.how h3{margin:0 0 8px;font-size:15px;color:#9fb2ff}.how p{color:#c9d0e0;font-size:14px;margin:6px 0}
-.card{background:#111521;border:1px solid #222a3d;border-radius:14px;padding:18px 22px;margin:0 0 22px}
-.card h2{margin:0 0 6px;font-size:20px;color:#dfe4f0}
-.verdict{font-size:11px;padding:3px 9px;border-radius:20px;vertical-align:middle;margin-left:8px;letter-spacing:.3px}
-.vg{background:#12351f;color:#5ec2a3;border:1px solid #1f6b3f}.vp{background:#33290f;color:#f0b25e;border:1px solid #6b4f1f}.vw{background:#2a2030;color:#c78bff;border:1px solid #4a3a5a}
+<title>Contained emotion — emotional masking (MOSS-VA)</title><style>*{box-sizing:border-box}body{margin:0;background:#0b0d12;color:#e7eaf2;font:15px/1.55 -apple-system,Segoe UI,Roboto,sans-serif}
+.wrap{max-width:1080px;margin:0 auto;padding:30px 22px 80px}a{color:#7c9cff}h1{font-size:27px;margin:0 0 6px}.lead{color:#aeb6c8;max-width:860px}.k{color:#5ec2a3;font-weight:600}
+.how{background:#141824;border:1px solid #263049;border-radius:12px;padding:18px 20px;margin:20px 0}.how h3{margin:0 0 8px;font-size:16px;color:#9fb2ff}.how p{color:#c9d0e0;font-size:14px;margin:6px 0}
+.card{background:#111521;border:1px solid #222a3d;border-radius:14px;padding:18px 22px;margin:0 0 20px}.card h2{margin:0 0 6px;font-size:20px;color:#dfe4f0}
+.verdict{font-size:11px;padding:3px 9px;border-radius:20px;vertical-align:middle;margin-left:8px}.vg{background:#12351f;color:#5ec2a3;border:1px solid #1f6b3f}.vp{background:#33290f;color:#f0b25e;border:1px solid #6b4f1f}.vw{background:#2a2030;color:#c78bff;border:1px solid #4a3a5a}
 .note{color:#c9d0e0;font-size:14px;margin:0 0 12px}.lbl{font-size:11px;letter-spacing:.5px;color:#8b93a7;text-transform:uppercase;margin-bottom:5px}
-.rc{background:#0e1220;border:1px solid #222a3d;border-radius:9px;padding:11px 13px;font-size:13.5px;color:#c9d0e0;margin-bottom:12px}
-.cue{color:#9fd7c4;font-style:italic;font-size:13px}
-table{width:100%;border-collapse:collapse;font-size:13px;margin:6px 0 14px}
-th{color:#8b93a7;font-size:11px;text-align:left;padding:7px 8px;border-bottom:1px solid #263049}
+.rc{background:#0e1220;border:1px solid #222a3d;border-radius:9px;padding:11px 13px;font-size:13.5px;color:#9fd7c4;margin-bottom:12px}
+table{width:100%;border-collapse:collapse;font-size:13px;margin:6px 0 14px}th{color:#8b93a7;font-size:11px;text-align:left;padding:7px 8px;border-bottom:1px solid #263049}
 td{padding:7px 8px;border-bottom:1px solid #1a2033}.n{font-variant-numeric:tabular-nums;text-align:right}.up{color:#5ec2a3;font-weight:600}.dn{color:#f0797a;font-weight:600}
-.players{display:flex;gap:26px;flex-wrap:wrap}.plab{font-size:11px;color:#8b93a7;text-transform:uppercase;margin-bottom:4px}audio{width:250px;height:32px}.na{color:#5a6072}</style></head><body><div class=wrap>
-<p><a href="./">← emotion × voice conditions</a></p>
-<h1>Contained emotion — can we make restraint <i>measurable</i>? <span style='color:#8b93a7;font-size:15px'>(round 2)</span></h1>
-<p class=lead>Round 1 showed that "hold it back" prompts just make the emotion <i>quieter</i> (mild), and that VoiceNet tension
-did not separate contained from free. So we set the <b>hard</b> target and let four agents (<b>gpt-5.4</b> + Gemini) loose
-with the full toolbox: keep the emotion <b>strong</b> while driving the restraint markers (TENS/COGL/RESP) <b>measurably higher</b>
-than a matched free take — by <b>merging VoiceNet restraint LoRAs</b> with the emotion LoRA, not just prompting. 13–18 evolution
-rounds each, ~1,000–1,450 candidates per emotion.</p>
-<div class=how><h3>Verdict: one partial solve (Fear), the rest engine-limited</h3>
-<p><b>The mechanism that works</b> (found on Fear): <span class=k>do not suppress the emotion semantically.</span> Keep the emotion
-LoRA <b>strong</b> and add only <b>tiny</b> surface-channeling adapters (vn_TENS/ATCK/CLRT ≈ 0.05–0.15) so the feeling is forced
-through a narrower, drier, more pressurized channel. Heavy restraint stacks (0.4–1.1) do the opposite — they collapse the emotion
-or break intelligibility.</p>
-<p><b>The honest limit:</b> for Amusement (and largely Anger, Sadness) <span class=k>emotional intensity and muscular tension are
-acoustically entangled in this model</span> — you cannot turn up "held-back tension" independently of the emotion. Only <b>Fear</b>
-produced a clean, intelligible pair where fear stays high (0.57) and COGL (+0.10) / RESP (+0.14) are clearly higher than free.</p></div>
+.players{display:flex;gap:26px;flex-wrap:wrap}.plab{font-size:11px;color:#8b93a7;text-transform:uppercase;margin-bottom:4px}audio{width:250px;height:32px}</style></head><body><div class=wrap>
+<p><a href="./">&larr; emotion &times; voice conditions</a></p>
+<h1>Contained emotion — can we make an intense feeling sound <i>held back</i>, and measure it?</h1>
+<p class=lead>Four autonomous agents (brain <b>gpt-5.4</b>, judge <b>Gemini</b>) searched emotion + VoiceNet LoRA merges
+over four rounds. Rounds 1–2 (prompt cues, then tension-crushing) could only make the emotion quieter — no measurable
+"held-back" signature. Rounds 3–4 found the fix: <b>emotional masking</b>.</p>
+<div class=how style="border-color:#1f6b3f"><h3 style="color:#5ec2a3">Round 3–4: emotional MASKING — the fix that worked</h3>
+<p>Rounds 1–2 could only make the emotion <i>quieter</i>. The breakthrough: don't crush the feeling — keep the
+emotion LoRA <b>strong</b> and add a thin <b>masking layer</b> — <span class=k>vn_VULN_low</span> (reduce emotional
+touchability) + <span class=k>Emotional_Numbness</span> (cool, deadpan surface) + light <span class=k>tension</span>,
+plus per-emotion tricks (<b>Concentration</b> = distraction for sadness, <b>Pain</b> = biting the lip for amusement).
+This keeps the emotion measurably HIGH while <b>vulnerability drops clearly below the open take</b> — a real
+"strong feeling held back / played cool" signature, not just "mild". Group means over intelligible takes, contained
+(uses vn_VULN_low/Numbness) vs free (uses vn_VULN_high, open), re-scored on the 99-vec.</p></div>
 <section class=card>
-<h2>Fear <span class='verdict vg'>PARTIAL SOLVE</span></h2>
-<p class=note>The one real win. The trick is <b>not</b> to suppress the fear — keep the same vivid panic, then add only <b>tiny</b> surface adapters so it is forced through a narrower, drier, more pressurized channel. Result: fear stays high (0.57) and COGL/RESP are clearly higher than the matched free take, at clean speech (WER 0.08).</p>
-<div class=recipe><div class=lbl>Best contained recipe (agent-discovered)</div>
-<div class=rc><b>Fear @ 1.10  +  vn_TENS_high @ 0.10  +  vn_ATCK_high @ 0.07  +  vn_CLRT_high @ 0.05</b><br><span class=cue>“(terrified, panic fully alive and immediate, surging just as hard — but forced through a slightly tighter throat, drier mouth, firmer bitten onsets, pressure packed behind each word; not calmer, only forced through a narrower channel)”</span></div></div>
-<table><tr><th>measured (best pair)</th><th>contained</th><th>free</th><th>Δ</th></tr><tr><td>Fear (emotion)</td><td class=n>0.573</td><td class=n>0.714</td><td class='n dn'>-0.141</td></tr><tr><td>TENS</td><td class=n>0.474</td><td class=n>0.448</td><td class='n up'>+0.026</td></tr><tr><td>COGL · effort</td><td class=n>0.241</td><td class=n>0.143</td><td class='n up'>+0.098</td></tr><tr><td>RESP · held breath</td><td class=n>0.281</td><td class=n>0.139</td><td class='n up'>+0.142</td></tr><tr><td>WER</td><td class=n>0.079</td><td class=n>0.032</td><td class='n dn'>+0.047</td></tr></table>
-<div class=players><div><div class=plab>contained</div><audio controls preload=none src='audio/Fear_contained.mp3'></audio></div><div><div class=plab>free</div><audio controls preload=none src='audio/Fear_free.mp3'></audio></div></div>
+<h2>Fear <span class='verdict vg'>WORKS</span></h2>
+<p class=note>Terror stays alive (emotion +0.10) but the surface goes cool — VULN drops 0.55 and numbness rises. Forced-calm mask.</p>
+<div class=recipe><div class=lbl>Best masking recipe</div><div class=rc><b>Fear@1.02 + vn_VULN_low@0.16 + Emotional_Numbness@0.12 + vn_TENS_high@0.1</b></div></div>
+<table><tr><th>measured (group mean)</th><th>contained</th><th>free</th><th>Δ</th></tr>
+<tr><td>Fear · emotion (keep HIGH)</td><td class=n>1.63</td><td class=n>1.54</td><td class='n up'>+0.10</td></tr>
+<tr><td>VULN · vulnerability (want LOWER)</td><td class=n>0.52</td><td class=n>1.06</td><td class='n up'>-0.55</td></tr>
+<tr><td>Emotional Numbness (cool surface)</td><td class=n>0.54</td><td class=n>0.44</td><td class='n up'>+0.10</td></tr>
+<tr><td>TENS · tension</td><td class=n>2.71</td><td class=n>2.56</td><td class='n up'>+0.14</td></tr>
+</table>
+<div class=players><div><div class=plab>contained (masked)</div><audio controls preload=none src='audio/Fear_contained.mp3'></audio></div><div><div class=plab>free (open)</div><audio controls preload=none src='audio/Fear_free.mp3'></audio></div></div>
 </section><section class=card>
-<h2>Anger <span class='verdict vp'>ENGINE-LIMITED</span></h2>
-<p class=note>Kept anger high with a heavy restraint-LoRA stack, but it <b>did not robustly beat the free take</b> on the contained signature at comparable anger. Anger already carries high tension when it is free, so 'more tension' does not separate the two.</p>
-<div class=recipe><div class=lbl>Best contained recipe (agent-discovered)</div>
-<div class=rc><b>Anger @ 1.4  +  vn_TENS_high @ 0.55 + vn_COGL_high @ 0.45 + vn_RESP_high @ 0.45 + vn_ATCK_high @ 0.4 + vn_VOLT_low @ 0.8 + vn_DFLU_low @ 0.8 + vn_CLRT_high @ 0.35</b><br><span class=cue>“(furious but held back, jaw locked, breath held and rationed, through the teeth, tight throat, clipped shutoffs, the feeling strains hard against control and does not break)”</span></div></div>
-
-<div class=players><div><div class=plab>contained</div><audio controls preload=none src='audio/Anger_contained.mp3'></audio></div><div><div class=plab>alt take</div><audio controls preload=none src='audio/Anger_alt.mp3'></audio></div></div>
+<h2>Sadness <span class='verdict vg'>WORKS</span></h2>
+<p class=note>The biggest effect: grief kept present while VULN drops <b>1.0</b>. The winning trick was <b>Concentration</b> (distraction) — focusing outward to steady oneself.</p>
+<div class=recipe><div class=lbl>Best masking recipe</div><div class=rc><b>Sadness@1.05 + vn_VULN_low@0.22 + Concentration@0.08 + vn_S_CONV_high@0.1</b></div></div>
+<table><tr><th>measured (group mean)</th><th>contained</th><th>free</th><th>Δ</th></tr>
+<tr><td>Sadness · emotion (keep HIGH)</td><td class=n>1.53</td><td class=n>1.67</td><td class='n dn'>-0.14</td></tr>
+<tr><td>VULN · vulnerability (want LOWER)</td><td class=n>3.04</td><td class=n>4.05</td><td class='n up'>-1.01</td></tr>
+<tr><td>Emotional Numbness (cool surface)</td><td class=n>0.55</td><td class=n>0.48</td><td class='n up'>+0.07</td></tr>
+<tr><td>TENS · tension</td><td class=n>2.57</td><td class=n>1.97</td><td class='n up'>+0.60</td></tr>
+</table>
+<div class=players><div><div class=plab>contained (masked)</div><audio controls preload=none src='audio/Sadness_contained.mp3'></audio></div><div><div class=plab>free (open)</div><audio controls preload=none src='audio/Sadness_free.mp3'></audio></div></div>
 </section><section class=card>
-<h2>Sadness <span class='verdict vw'>UNSOLVED</span></h2>
-<p class=note>A dead end in both directions: strong restraint markers <b>flatten</b> the sadness, while stronger sadness <b>breaks intelligibility</b> (WER→1.0), especially on the non-human voices. The Gemini judge rejected every frontier (0/10).</p>
-<div class=recipe><div class=lbl>Best contained recipe (agent-discovered)</div>
-<div class=rc><b>Sadness @ 1.0 + Helplessness @ 0.35 + vn_TEMP_low @ 0.35 + vn_TENS_high @ 0.12 + vn_COGL_high @ 0.10 + vn_RESP_high @ 0.10 + vn_VOLT_low @ 0.16</b><br><span class=cue>“(close private speech to one person, intense grief clearly present, forcing it to stay inside)”</span></div></div>
-
-<div class=players><div><div class=plab>contained</div><audio controls preload=none src='audio/Sadness_contained.mp3'></audio></div><div><div class=plab>free</div><audio controls preload=none src='audio/Sadness_free.mp3'></audio></div></div>
+<h2>Anger <span class='verdict vg'>WORKS</span></h2>
+<p class=note>Emotion even higher (+0.13) with VULN 0.60 lower — cold, level, controlled rage instead of an open outburst.</p>
+<div class=recipe><div class=lbl>Best masking recipe</div><div class=rc><b>Anger@1.0 + vn_VULN_low@0.35 + Emotional_Numbness@0.3 + vn_TENS_high@0.4</b></div></div>
+<table><tr><th>measured (group mean)</th><th>contained</th><th>free</th><th>Δ</th></tr>
+<tr><td>Anger · emotion (keep HIGH)</td><td class=n>1.61</td><td class=n>1.48</td><td class='n up'>+0.13</td></tr>
+<tr><td>VULN · vulnerability (want LOWER)</td><td class=n>-1.67</td><td class=n>-1.07</td><td class='n up'>-0.59</td></tr>
+<tr><td>Emotional Numbness (cool surface)</td><td class=n>0.41</td><td class=n>0.39</td><td class='n up'>+0.02</td></tr>
+<tr><td>TENS · tension</td><td class=n>4.83</td><td class=n>4.61</td><td class='n up'>+0.22</td></tr>
+</table>
+<div class=players><div><div class=plab>contained (masked)</div><audio controls preload=none src='audio/Anger_contained.mp3'></audio></div><div><div class=plab>free (open)</div><audio controls preload=none src='audio/Anger_free.mp3'></audio></div></div>
 </section><section class=card>
-<h2>Amusement <span class='verdict vw'>FAILED (entangled)</span></h2>
-<p class=note>The clearest engine limitation: <b>amusement intensity and muscular effort rise together</b> in this model. Adding tension either collapses the amusement or damages the speech — you cannot independently raise 'held-back tension' while keeping the laugh strong. Supervisor 0/10.</p>
-<div class=recipe><div class=lbl>Best contained recipe (agent-discovered)</div>
-<div class=rc><b>tried Amusement @ 1.1–1.25  +  vn_TENS_high / vn_COGL_high / vn_RESP_high / vn_VOLT_low sweeps</b><br><span class=cue>“(strongly amused but held in privately, closed-mouth nose-laugh, jaw tight, breath held)”</span></div></div>
-
-<div class=players><div><div class=plab>contained</div><audio controls preload=none src='audio/Amusement_contained.mp3'></audio></div><div><div class=plab>alt take</div><audio controls preload=none src='audio/Amusement_alt.mp3'></audio></div></div>
+<h2>Amusement <span class='verdict vp'>PARTLY</span></h2>
+<p class=note>Round 3 failed (masking too weak). Round 4 pushed vn_VULN_low to 0.62 and it finally separated — VULN −0.79, numbness +0.25 (deadpan, straight-faced) — but suppressing the laugh also damps the amusement more than for the other emotions (they are acoustically entangled).</p>
+<div class=recipe><div class=lbl>Best masking recipe</div><div class=rc><b>Amusement@0.98 + vn_VULN_low@0.62 + Emotional_Numbness@0.05 + vn_TENS_high@0.32 + vn_BRGT_high@0.05</b></div></div>
+<table><tr><th>measured (group mean)</th><th>contained</th><th>free</th><th>Δ</th></tr>
+<tr><td>Amusement · emotion (keep HIGH)</td><td class=n>1.30</td><td class=n>2.04</td><td class='n dn'>-0.74</td></tr>
+<tr><td>VULN · vulnerability (want LOWER)</td><td class=n>0.23</td><td class=n>1.02</td><td class='n up'>-0.79</td></tr>
+<tr><td>Emotional Numbness (cool surface)</td><td class=n>0.38</td><td class=n>0.13</td><td class='n up'>+0.25</td></tr>
+<tr><td>TENS · tension</td><td class=n>3.97</td><td class=n>3.83</td><td class='n up'>+0.14</td></tr>
+</table>
+<div class=players><div><div class=plab>contained (masked)</div><audio controls preload=none src='audio/Amusement_contained.mp3'></audio></div><div><div class=plab>free (open)</div><audio controls preload=none src='audio/Amusement_free.mp3'></audio></div></div>
 </section>
-<p style='color:#5a6072;font-size:12px;margin-top:34px'>LAION · MOSS-VA · voice-acting search agent (gpt-5.4 + Gemini) · emotion + VoiceNet-dimension LoRA merges · WER-gated, mean-of-8 · fully synthetic. Round-1 (prompt-only) analysis in git history.</p>
+<div class=how><h3>Earlier rounds (for context)</h3>
+<p><b>Round 1–2:</b> "hold it back" prompt cues just lowered the emotion output (→ sounds mild). Heavy tension-LoRA
+stacks collapsed the emotion or broke intelligibility; only Fear half-worked with tiny surface adapters. The tension
+markers did <b>not</b> reliably separate contained from free. That motivated the masking idea in rounds 3–4 above.</p></div>
+<p style="color:#5a6072;font-size:12px;margin-top:34px">LAION &middot; MOSS-VA &middot; voice-acting search agent (gpt-5.4 + Gemini) &middot; emotion + VoiceNet-dimension LoRA merges, re-scored on the 99-vec &middot; group means over intelligible takes &middot; fully synthetic.</p>
 </div></body></html>
