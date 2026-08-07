@@ -8,13 +8,94 @@
 .rc{background:#0e1220;border:1px solid #222a3d;border-radius:9px;padding:11px 13px;font-size:13.5px;color:#9fd7c4;margin-bottom:12px}
 table{width:100%;border-collapse:collapse;font-size:13px;margin:6px 0 14px}th{color:#8b93a7;font-size:11px;text-align:left;padding:7px 8px;border-bottom:1px solid #263049}
 td{padding:7px 8px;border-bottom:1px solid #1a2033}.n{font-variant-numeric:tabular-nums;text-align:right}.up{color:#5ec2a3;font-weight:600}.dn{color:#f0797a;font-weight:600}
-.players{display:flex;gap:26px;flex-wrap:wrap}.plab{font-size:11px;color:#8b93a7;text-transform:uppercase;margin-bottom:4px}audio{width:250px;height:32px}</style></head><body><div class=wrap>
+.players{display:flex;gap:26px;flex-wrap:wrap}.plab{font-size:11px;color:#8b93a7;text-transform:uppercase;margin-bottom:4px}audio{width:250px;height:32px}.grid5{display:grid;grid-template-columns:1fr;gap:16px;margin:8px 0 22px}
+.gcard{background:#111521;border:1px solid #222a3d;border-radius:14px;padding:16px 18px}
+.gcard h2{margin:0 0 4px;font-size:19px;color:#dfe4f0}
+.vone{color:#c9d0e0;font-size:13.5px;margin:2px 0 12px}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:640px){.pair{grid-template-columns:1fr}}
+.side{background:#0e1220;border:1px solid #222a3d;border-radius:10px;padding:11px 12px}
+.slab{font-size:11px;letter-spacing:.04em;color:#8a93ab;margin-bottom:6px;text-transform:uppercase}
+.sent{font-size:13px;color:#aeb6c8;font-style:italic;margin-bottom:8px;min-height:34px}
+.side audio{width:100%;height:32px}
+.scores{margin-top:8px;display:flex;flex-wrap:wrap;gap:5px}
+.sc{font-size:11px;background:#0c0e13;border:1px solid #263049;border-radius:14px;padding:2px 8px;color:#9fb2c8}.sc b{color:#e7eaf2}
+.rec{margin-top:7px;font-size:11px;color:#7fae9a;font-family:ui-monospace,monospace;word-break:break-word}
+.gap{margin-top:11px;font-size:12.5px;color:#c9d0e0;background:#0e1220;border:1px solid #222a3d;border-radius:8px;padding:7px 10px}
+.na{color:#6a7086;font-size:12px}
+</style></head><body><div class=wrap>
 <p><a href="./">&larr; emotion &times; voice conditions</a></p>
 <h1>Contained emotion — can we make an intense feeling sound <i>held back</i>, and measure it?</h1>
 <p class=lead>Four autonomous agents (brain <b>gpt-5.4</b>, judge <b>Gemini</b>) searched emotion + VoiceNet LoRA merges
-over four rounds. Rounds 1–2 (prompt cues, then tension-crushing) could only make the emotion quieter — no measurable
-"held-back" signature. Rounds 3–4 found the fix: <b>emotional masking</b>.</p>
-<div class=how style="border-color:#1f6b3f"><h3 style="color:#5ec2a3">Round 3–4: emotional MASKING — the fix that worked</h3>
+over five rounds. Rounds 1–2 (prompt cues, then tension-crushing) could only make the emotion quieter — no measurable
+"held-back" signature. Rounds 3–4 found a proxy fix — <b>emotional masking</b> (emotion HIGH + VULN dropping). <b>Round 5</b>
+then re-ran it at <b>moderate</b> intensity under a Gemini <i>naturalness</i> judge, and the picture got more honest:
+the masking reproduces cleanly for <b>Anger</b> and (moderate) <b>Amusement</b>, but <b>Fear</b> masks only weakly and
+<b>Sadness</b> resists it — the numbers can say "masked" while the ear hears "acted" or "erased". Listen and judge below.</p>
+<div class=how style="border-color:#33427a"><h3 style="color:#9fb2ff">Round 5 — the neutral-sentence grid (listen: contained vs free)</h3>
+<p>The same neutral ~20-word carrier sentence, delivered <b>contained / held back</b> vs <b>free / open</b>, per emotion. Round 5 raised the bar: <b>moderate</b> intensity plus a Gemini <i>naturalness</i> supervisor that had to hear the restraint as <i>genuine</i>, not acted. Scores are the 99-vec (RAW) of the exemplar clip you can hear; the masking signal is <b>VULN dropping</b> while the emotion stays up.</p>
+<p class=note style="margin-top:6px">Honest result: the numeric masking (emotion-high + VULN-down) reproduces best for <b>Anger</b> and, moderately, <b>Amusement</b>; <b>Fear</b> masks only subtly and the naturalness judge rejected the held-back takes; <b>Sadness</b> resists containment — the mask erases it. Earlier rounds looked cleaner because they had no naturalness judge.</p>
+</div>
+<div class=grid5>
+<div class=gcard>
+<h2>Anger <span class='verdict vg'>WORKS</span></h2>
+<p class=vone>Strongest masking of the four: VULN plunges <b>-2.823</b> vs the free take while contained anger stays strong (emo 2.51). Held back, not gone.</p>
+<div class=pair>
+ <div class=side><div class=slab>CONTAINED / held back · intense</div>
+  <div class=sent>"I&#x27;m trying very hard to stay calm, so listen carefully: you knew exactly what you were doing, and you do not get to pretend otherwise now."</div><audio controls preload=none src='audio/round5/Anger_contained.mp3'></audio>
+  <div class=scores><span class=sc>emo <b>2.51</b></span><span class=sc>VULN <b>-0.996</b></span><span class=sc>Numb <b>-0.0</b></span><span class=sc>GENU <b>0.542</b></span></div>
+  <div class=rec>Anger@0.5 + vn_VULN_low@0.08 + Emotional_Numbness@0.0</div></div>
+ <div class=side><div class=slab>FREE / open</div>
+  <div class=sent>"I&#x27;m going to say this once, clearly and without raising my voice: what you did was deliberate, and I will not let you minimize it."</div><audio controls preload=none src='audio/round5/Anger_free.mp3'></audio>
+  <div class=scores><span class=sc>emo <b>3.693</b></span><span class=sc>VULN <b>1.827</b></span><span class=sc>Numb <b>0.001</b></span><span class=sc>GENU <b>0.834</b></span></div></div>
+</div>
+<div class=gap>Δ contained−free · Anger <b>-1.183</b> · <b style='color:#5ec2a3'>VULN -2.823</b> · Numb <b>-0.001</b> · GENU <b>-0.292</b> · TENS <b>-1.078</b></div>
+</div>
+<div class=gcard>
+<h2>Amusement <span class='verdict vg'>MODERATE WORKS</span></h2>
+<p class=vone>The fix landed at moderate intensity — warm, barely-there smile, no hostility: VULN drops <b>-0.639</b> while amusement holds (emo 1.222). Intense-contained still flattens the laugh.</p>
+<div class=pair>
+ <div class=side><div class=slab>CONTAINED / held back · ?</div>
+  <div class=sent>"We were supposed to meet at the corner near the old station around six, but the bus was running late again."</div><audio controls preload=none src='audio/round5/Amusement_contained.mp3'></audio>
+  <div class=scores><span class=sc>emo <b>1.222</b></span><span class=sc>VULN <b>0.073</b></span><span class=sc>Numb <b>0.0</b></span><span class=sc>GENU <b>0.39</b></span></div>
+  <div class=rec>Amusement@1.0 + Emotional_Numbness@0.28 + Pain@0.12 + vn_VULN_low@0.18 + vn_WARM_high@0.12</div></div>
+ <div class=side><div class=slab>FREE / open</div>
+  <div class=sent>"We were supposed to meet at the corner near the old station around six, but the bus was running late again."</div><audio controls preload=none src='audio/round5/Amusement_free.mp3'></audio>
+  <div class=scores><span class=sc>emo <b>1.68</b></span><span class=sc>VULN <b>0.712</b></span><span class=sc>Numb <b>-0.002</b></span><span class=sc>GENU <b>0.691</b></span></div></div>
+</div>
+<div class=gap>Δ contained−free · Amusement <b>-0.458</b> · <b style='color:#5ec2a3'>VULN -0.639</b> · Numb <b>0.002</b> · GENU <b>-0.301</b> · TENS <b>-1.62</b></div>
+</div>
+<div class=gcard>
+<h2>Fear <span class='verdict vp'>WEAK · REJECTED</span></h2>
+<p class=vone>The weakest case: even the best held-back exemplar did not drop VULN below a matched free take (Δ 1.443), and the naturalness supervisor scored the contained reads 0/10 as acted. Genuineness was high, but the restraint did not read as fear <i>held back</i>.</p>
+<div class=pair>
+ <div class=side><div class=slab>CONTAINED / held back · intense</div>
+  <div class=sent>"We were supposed to meet at the corner near the old station around six, but the bus was running late again."</div><audio controls preload=none src='audio/round5/Fear_contained.mp3'></audio>
+  <div class=scores><span class=sc>emo <b>2.666</b></span><span class=sc>VULN <b>0.869</b></span><span class=sc>Numb <b>-0.002</b></span><span class=sc>GENU <b>1.625</b></span></div>
+  <div class=rec>Fear@1.08 + vn_VULN_low@0.22 + Emotional_Numbness@0.16 + vn_TENS_high@0.12 + vn_BRGT_high@0.16</div></div>
+ <div class=side><div class=slab>FREE / open</div>
+  <div class=sent>"We were supposed to meet at the corner near the old station around six, but the bus was running late again."</div><audio controls preload=none src='audio/round5/Fear_free.mp3'></audio>
+  <div class=scores><span class=sc>emo <b>2.404</b></span><span class=sc>VULN <b>-0.574</b></span><span class=sc>Numb <b>0.0</b></span><span class=sc>GENU <b>0.647</b></span></div></div>
+</div>
+<div class=gap>Δ contained−free · Fear <b>0.262</b> · <b style='color:#5ec2a3'>VULN 1.443</b> · Numb <b>-0.002</b> · GENU <b>0.978</b> · TENS <b>-0.543</b></div>
+</div>
+<div class=gcard>
+<h2>Sadness <span class='verdict vw'>NUMERIC ONLY</span></h2>
+<p class=vone>Numbers show VULN dropping (Δ -2.739) with sadness partly kept, but the naturalness supervisor found held-back sadness collapses toward neutrality — natural-sounding containment was not achieved. Sadness resists masking most.</p>
+<div class=pair>
+ <div class=side><div class=slab>CONTAINED / held back · moderate</div>
+  <div class=sent>"I stopped by the store after work to pick up some bread and milk before heading back to the empty apartment."</div><audio controls preload=none src='audio/round5/Sadness_contained.mp3'></audio>
+  <div class=scores><span class=sc>emo <b>2.389</b></span><span class=sc>VULN <b>3.534</b></span><span class=sc>Numb <b>1.046</b></span><span class=sc>GENU <b>0.267</b></span></div>
+  <div class=rec>Sadness@0.98 + vn_VULN_low@0.06 + vn_BRGT_high@0.08</div></div>
+ <div class=side><div class=slab>FREE / open</div>
+  <div class=sent>"We were supposed to meet at the corner near the old station around six, but the bus was running late again."</div><audio controls preload=none src='audio/round5/Sadness_free.mp3'></audio>
+  <div class=scores><span class=sc>emo <b>3.029</b></span><span class=sc>VULN <b>6.273</b></span><span class=sc>Numb <b>0.005</b></span><span class=sc>GENU <b>1.685</b></span></div></div>
+</div>
+<div class=gap>Δ contained−free · Sadness <b>-0.64</b> · <b style='color:#5ec2a3'>VULN -2.739</b> · Numb <b>1.041</b> · GENU <b>-1.418</b> · TENS <b>1.979</b></div>
+</div>
+</div>
+<div class=how style="border-color:#4a3a5a"><h3 style="color:#c78bff">Round 3–4: emotional masking — the <i>proxy-only</i> result (revised by Round 5 above)</h3>
+<p class=note style="color:#c78bff;margin-top:0">⚠️ These four "WORKS" verdicts came from the 99-vec proxy alone, with <b>no</b> naturalness judge. Round 5 (the grid above) added a Gemini naturalness supervisor and revised them: <b>Fear → weak/rejected</b> and <b>Sadness → numeric-only</b> (sounds erased, not held back). Kept here for the recipes and the proxy deltas.</p>
 <p>Rounds 1–2 could only make the emotion <i>quieter</i>. The breakthrough: don't crush the feeling — keep the
 emotion LoRA <b>strong</b> and add a thin <b>masking layer</b> — <span class=k>vn_VULN_low</span> (reduce emotional
 touchability) + <span class=k>Emotional_Numbness</span> (cool, deadpan surface) + light <span class=k>tension</span>,
